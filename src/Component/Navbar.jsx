@@ -40,17 +40,7 @@ function Navbar() {
                 <div className="container-fluid p-4 mb-5 responsive-Navbar">
                     <div className="row">
                         <div className="col-3"><GrMenu /></div>
-                        {/* <div className="col-6">
-
-                            <ul className='d-flex gap-5 lists'>
-                                <li>Home</li>
-                                <li>Shop</li>
-                                <li>Pages</li>
-                                <li>Blog</li>
-                                <li>Contact</li>
-                            </ul>
-
-                        </div> */}
+                    
                         <div className='col-6 d-flex justify-content-center'>Aranoz.</div>
                         <div className="col-3 d-flex gap-4">
                             <FiSearch />

@@ -1,7 +1,6 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
 import Navbar from '../Component/Navbar'
-import Awesome from '../Component/Awesome'
+import { Outlet } from 'react-router-dom'
 
 
 
@@ -10,6 +9,9 @@ function Layout() {
     <>
 
        <Navbar/>
+        <Outlet/>
+
+      
     
     </>
   )
