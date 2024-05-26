@@ -1,13 +1,13 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 
 
 function Admin() {
   const [info, setinfo] = useState([])
-  const [value, setvalue] = useState("")
-  const [change, setchange] = useState(null)
+  const [search, setsearch] = useState("")
+  const [value, setvalue] = useState('def')
 
   useEffect(() => {
     axios.get('http://localhost:3000/mehsullar')
@@ -15,30 +15,36 @@ function Admin() {
   }, [])
 
 
-  const searchData = () => {
-    return info.filter(inf => {
-      return inf.name?.toUpperCase().startsWith(value.toUpperCase())
-    })
-  }
+  const searchData = info.filter(inf => {
+    return (
+      inf.name.toUpperCase().startsWith(search.toUpperCase())
+    )
+  })
 
   const filterData = () => {
-    if (change == 'AtoZ') {
-      return searchData().toSorted((a,b)=>a.name-b.name)
+    if (value == 'AtoZ') {
+      return [...searchData].sort((a, b) => a.price - b.price);
     }
-    else if (change == 'AtoZ') {
-      return searchData().toSorted((a,b)=>b.name-a.name)
+    else if (value == 'ZtoA') {
+      return [...searchData].sort((a, b) => b.price - a.price);
     }
     else {
-      return [...searchData()]
+      return [...searchData];
     }
+  }
+
+  let {id} = useParams()
+
+  const deleteFunction = (id) => {
+      axios.delete('http://localhost:3000/mehsullar/'+id)
   }
 
   return (
 
     <div className='d-flex flex-column align-items-center '>
 
-      <input type="text" placeholder='Search' className='m-3 p-1 w-50' onInput={(e) => setvalue(e.target.value)} />
-      <select onChange={(e)=>setchange(e.target.value)}>
+      <input type="text" placeholder='Search' className='m-3 p-1 w-50' onInput={(e) => setsearch(e.target.value)} />
+      <select onChange={(e) => setvalue(e.target.value)}>
         <option value={'def'}>Default</option>
         <option value={'AtoZ'}>A-Z</option>
         <option value={'ZtoA'}>Z-A</option>
@@ -51,17 +57,21 @@ function Admin() {
             <th>Image</th>
             <th>Name</th>
             <th>Price</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
-        </thead>
+        </thead >
         <tbody>
           {
-            filterData().map((el) => {
+            filterData().map((el,i) => {
               return (
-                <tr>
+                <tr key={i}>
                   <td>{el.id}</td>
                   <td><div className='boxes'><img src={el.image} alt="" /></div></td>
                   <td>{el.name}</td>
                   <td>{el.price}</td>
+                  <td><Link to={'/edit/'+el.id}><button className='btn btn-outline-secondary'>Edit</button></Link></td>
+                  <td><button onClick={()=>deleteFunction(el.id)}  className='btn btn-outline-secondary'>Delete</button></td>
                 </tr>
               )
             })

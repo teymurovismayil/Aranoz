@@ -5,6 +5,7 @@ import Layout from './Layout/Layout';
 import Home from '../Page/Home';
 import Admin from '../Page/Admin';
 import Add from '../Page/Add';
+import Edit from '../Page/Edit';
 
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
         </Route>
         <Route element={<Admin />} path='/admin'></Route>
         <Route element={<Add/>} path='/add'></Route>
-
+        <Route element={<Edit/>} path={'/edit/:id'}></Route>
 
       </Routes>
 
