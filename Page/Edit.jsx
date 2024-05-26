@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form"
 function Edit() {
     const { register, handleSubmit } = useForm({defaultValues: async () => fetch('http://localhost:3000/mehsullar/')})
     const [info, setinfo] = useState([])
-    // const [image, setimage] = useState(null)
+    const [image, setimage] = useState(null)
+
     let {id} = useParams();
 
     useEffect(() => {
@@ -16,9 +17,17 @@ function Edit() {
     
 
     const onSubmit = (data) => {
-        axios.patch('http://localhost:3000/mehsullar/'+id,data) 
+        axios.patch('http://localhost:3000/mehsullar/'+id,{...data, image:image}) 
     }
     
+    const convertToBase64 = (file) => {
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => {
+            setimage(reader.result)
+        }
+    }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='d-flex flex-column w-50 align-items-center mt-5'>
     <label>
@@ -28,7 +37,10 @@ function Edit() {
     </label>
     <label>Qiymet:
         <input {...register("price")} defaultValue={info.price} />
+    </label>
 
+    <label>Image:
+        <input type="file" onInput={(e)=>convertToBase64(e.target.files[0])}/>
     </label>
 
     
